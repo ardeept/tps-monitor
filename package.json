@@ -1,0 +1,15 @@
+{
+  "name": "tps-monitor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "tps-monitor.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ferdinand Yanto III",
+  "license": "ISC",
+  "dependencies": {
+    "memcached": "^2.1.0",
+    "uuid": "^2.0.1"
+  }
+}
