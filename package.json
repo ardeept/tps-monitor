@@ -9,6 +9,7 @@
   "author": "Ferdinand Yanto III",
   "license": "ISC",
   "dependencies": {
+    "lodash": "^3.7.0",
     "memcached": "^2.1.0",
     "uuid": "^2.0.1"
   }

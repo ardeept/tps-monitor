@@ -7,13 +7,16 @@
 
 		if(!config) config = {};
 
-		var Memcached = require('memcached');
 		var uuid 	  = require('uuid');
-		var memcached = new Memcached(config.memcached || "127.0.0.1:11211");
-
+		var _ 		  = require('lodash');
+		
 		var generic_key = uuid.v4();
 
-		self.update = function(value, key, cb)
+
+		var transactions = {};
+
+
+		self.update = function(value, key)
 		{	
 			// if only the value is specified, use the generic key
 			if(!key)
@@ -21,28 +24,23 @@
 				key = generic_key;
 			}
 
-			// check if the key already exists
-			memcached.get(key, function (err, data) {
+			if(!transactions[key])
+				transactions[key] = value;
+			else
+				transactions[key] += value;
 
-			  // if it doesn't exist, create a new one
-			  if(!data)
-			  {
-			  	// let's set it, lifetime is just one second
-			  	memcached.set(key, value, 1, function (err) {
+			return transactions[key];
+		}
 
-			  		// return the value
-					cb(value);
-				});
-			  }
-			  // if key already exists
-			  else
-			  {
-				 memcached.incr(key, value, function (err) {
-				 	cb(data + value);
-				 });  	
-			  }
+		// clear transactions
+		self.clear = function()
+		{
+			_.each(transactions, function(v, k){
+				transactions[k] = 0;
 			});
 		}
+
+		setInterval(self.clear, 1000);
 	};
 
 	module.exports = TpsMonitor;
