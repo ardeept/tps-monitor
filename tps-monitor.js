@@ -24,6 +24,12 @@
 				key = generic_key;
 			}
 
+			// default to 1
+			if(!value)
+			{
+				value = 1;
+			}
+
 			if(!transactions[key])
 				transactions[key] = value;
 			else
